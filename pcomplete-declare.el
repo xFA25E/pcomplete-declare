@@ -1,4 +1,4 @@
-;;; pcomplete--declare.el --- Define shell commands declaratively  -*- lexical-binding: t; -*-
+;;; pcomplete-declare.el --- Define shell commands declaratively  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2019
 
