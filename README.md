@@ -48,7 +48,7 @@ Define your shell completions in declarative way using the pcomplete libarary
     (:completions :directory :multiple t)
 
     ;; Here you can define a subcommands
-    ;; After entering in the subcommand completions previous
+    ;; After entering in the subcommand completions, previous
     ;; completions won't appear in the candidates list
     &subcommand
     ;; Important: :help property should be an the boginning
