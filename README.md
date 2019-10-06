@@ -2,7 +2,7 @@
 Define your shell completions in declarative way using the pcomplete libarary
 
 # Example usage
-```
+```emacs-lisp
 (pcomplete-declare mycommand
   "This defines completion for mycommand"
   ;; HELP_DEFS:
