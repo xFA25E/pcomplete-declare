@@ -437,7 +437,8 @@ In %S" (plist-get result :names))
            `(,(car candidates)
              (pcomplete-declare-run-completions
               ',(pcomplete-declare-parse-candidates (cdr candidates))))
-         `((pcomplete-declare-run-completions
+         `(,(concat "Completions for " (symbol-name command) " command.")
+           (pcomplete-declare-run-completions
             ',(pcomplete-declare-parse-candidates candidates))))))
 
 (provide 'pcomplete-declare)
