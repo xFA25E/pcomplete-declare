@@ -5,12 +5,14 @@
   pcomplete library. So, it should work with eshell and shell.
 
 * Example usage
-  #+begin_src emacs-lisp
+  #+NAME: block
+  #+BEGIN_SRC emacs-lisp
     (pcomplete-declare mycommand
       "This defines completion for mycommand" ; optional doc for a function
-  #+end_src
+  #+END_SRC
   hello
-  #+begin_src emacs-lisp
+  #+NAME: block
+  #+BEGIN_SRC emacs-lisp
 
       ;; Omit first "-" for flags and options. They will be added
       ;; automatically. This ensures that all flags and options will start
@@ -73,4 +75,4 @@
                      (:completions :executable)
                      (:completions :directory :multiple t))
         (subcommand2 (-my-flag))))
-  #+end_src
+  #+END_SRC
