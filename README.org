@@ -5,12 +5,12 @@
   pcomplete library. So, it should work with eshell and shell.
 
 * Example usage
-  #+begin_src emacs-lisp :tangle yes
+  #+begin_src emacs-lisp
     (pcomplete-declare mycommand
       "This defines completion for mycommand" ; optional doc for a function
   #+end_src
   hello
-  #+begin_src emacs-lisp :tangle yes
+  #+begin_src emacs-lisp
 
       ;; Omit first "-" for flags and options. They will be added
       ;; automatically. This ensures that all flags and options will start
