@@ -416,7 +416,7 @@ compare no more than N characters in lines")))
       (a :completions '("ABORTKEYSYM")
          :help "Name of the keysym used for aborting chord chains.")))
 
-  (when (load-functon-p 'dash)
+  (when (load-function-p 'dash)
     (pcomplete-declare dash
       (a :help "Export all variables assigned to.")
       (C :help "Don't overwrite existing files with “>”.")
