@@ -39,6 +39,7 @@
    - tail
    - uniq
 * Example of pcomplete-declare
+  More examples in pcomplete-declare-completions.el
   #+BEGIN_SRC emacs-lisp
     (pcomplete-declare mycommand
       "This defines completion for mycommand"
@@ -68,7 +69,7 @@
     "This defines completion for mycommand"
   #+END_SRC
 
-  Candidates MUST be defined in the followig order:
+  Candidates MUST be defined in the following order:
   flags -> options -> positional arguments -> subcommands
 
   For flags and options you MUST omit the leading dash ("-")
@@ -130,7 +131,7 @@
   subcommands have their own set of flags, options, positionals and
   subcommands. As soon as, pcomplete-declare detects that a subcommand
   was given as argument, it removes all previous completion candidates
-  and leaves only the subcommands's ones.
+  and leaves only the subcommand ones.
 
   Subcommands start with &subcommand symbol.
   #+BEGIN_SRC emacs-lisp
