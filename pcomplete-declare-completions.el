@@ -36,7 +36,6 @@
             (memq name pcomplete-declare-completions-whitelist))))
 
   (when (load-function-p 'echo)
-;;;###autoload
     (pcomplete-declare echo
       (n :help "do not output the trailing newline")
       (e :help "enable interpretation of backslash escapes")
