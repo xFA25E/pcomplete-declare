@@ -29,11 +29,11 @@
 (defvar pcomplete-declare-completions-whitelist :all)
 (defvar pcomplete-declare-completions-blacklist '())
 
-(labels ((load-function-p
-          (name)
-          (if (eq pcomplete-declare-completions-whitelist :all)
-              (not (memq name pcomplete-declare-completions-blacklist))
-            (memq name pcomplete-declare-completions-whitelist))))
+(cl-labels ((load-function-p
+             (name)
+             (if (eq pcomplete-declare-completions-whitelist :all)
+                 (not (memq name pcomplete-declare-completions-blacklist))
+               (memq name pcomplete-declare-completions-whitelist))))
 
   (when (load-function-p 'echo)
     (pcomplete-declare echo
