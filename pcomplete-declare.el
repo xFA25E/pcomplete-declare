@@ -93,24 +93,24 @@
 (defun pcomplete-declare-remove-flag (arg candidates)
   ""
   (let (removed)
-    (values (cl-remove-if
-             (lambda (candidate)
-               (when (pcomplete-declare-name-of-flag-p arg candidate)
-                 (setq removed candidate)
-                 (not (plist-get candidate :multiple))))
-             candidates)
-            removed)))
+    (cl-values (cl-remove-if
+                (lambda (candidate)
+                  (when (pcomplete-declare-name-of-flag-p arg candidate)
+                    (setq removed candidate)
+                    (not (plist-get candidate :multiple))))
+                candidates)
+               removed)))
 
 (defun pcomplete-declare-remove-option (arg candidates)
   ""
   (let (removed)
-    (values (cl-remove-if
-             (lambda (candidate)
-               (when (pcomplete-declare-name-of-option-p arg candidate)
-                 (setq removed candidate)
-                 (not (plist-get candidate :multiple))))
-             candidates)
-            removed)))
+    (cl-values (cl-remove-if
+                (lambda (candidate)
+                  (when (pcomplete-declare-name-of-option-p arg candidate)
+                    (setq removed candidate)
+                    (not (plist-get candidate :multiple))))
+                candidates)
+               removed)))
 
 (defun pcomplete-declare-subcommand (arg candidates)
   ""
@@ -121,16 +121,15 @@
 
 (defun pcomplete-declare-remove-positional-candidate (candidates)
   ""
-  (loop with removed = nil
-        for rest-candidates on candidates
-        for candidate = (car rest-candidates)
-        if (not (eq (plist-get candidate :type) :positional))
-        collect candidate into new-candidates
-        else return (values (if (plist-get candidate :multiple)
-                                candidates
-                              (append new-candidates (cdr rest-candidates)))
-                            candidate)
-        finally return (values candidates nil)))
+  (cl-loop for rest-candidates on candidates
+           for candidate = (car rest-candidates)
+           if (not (eq (plist-get candidate :type) :positional))
+           collect candidate into new-candidates
+           else return (cl-values (if (plist-get candidate :multiple)
+                                      candidates
+                                    (append new-candidates (cdr rest-candidates)))
+                                  candidate)
+           finally return (cl-values candidates nil)))
 
 (defun pcomplete-declare-make-candidates (candidates)
   ""
@@ -159,24 +158,24 @@
 
 (defun pcomplete-declare-make-positional-completions (candidates)
   ""
-  (loop for candidate in candidates
-        if (eq (plist-get candidate :type) :positional)
-        return (pcomplete-declare-make-completions
-                (plist-get candidate :completions))))
+  (cl-loop for candidate in candidates
+           if (eq (plist-get candidate :type) :positional)
+           return (pcomplete-declare-make-completions
+                   (plist-get candidate :completions))))
 
 (defun pcomplete-declare-make-subcommand-completions (candidates)
   ""
-  (loop for candidate in candidates
-        if (eq (plist-get candidate :type) :subcommand)
-        collect (plist-get candidate :name)))
+  (cl-loop for candidate in candidates
+           if (eq (plist-get candidate :type) :subcommand)
+           collect (plist-get candidate :name)))
 
 (defun pcomplete-declare-remove-candidates (subcommand)
   ""
-  (loop for relement on subcommand
-        for element = (car relement)
-        if (not (eq element :candidates))
-        collect element into result
-        else return (append result (cddr relement))))
+  (cl-loop for relement on subcommand
+           for element = (car relement)
+           if (not (eq element :candidates))
+           collect element into result
+           else return (append result (cddr relement))))
 
 (defun pcomplete-declare-run-completions (candidates)
   ""
@@ -186,13 +185,13 @@
 
       (let ((arg (pcomplete-arg)))
         (cond ((pcomplete-declare-flag-p arg candidates)
-               (destructuring-bind (new-candidates removed)
+               (cl-destructuring-bind (new-candidates removed)
                    (pcomplete-declare-remove-flag arg candidates)
                  (setq candidates new-candidates
                        prev removed)))
 
               ((pcomplete-declare-option-p arg candidates)
-               (destructuring-bind (new-candidates removed)
+               (cl-destructuring-bind (new-candidates removed)
                    (pcomplete-declare-remove-option arg candidates)
                  (setq candidates new-candidates
                        prev removed)))
@@ -207,7 +206,7 @@
                            prev (pcomplete-declare-remove-candidates
                                  subcommand)))
 
-                 (destructuring-bind (new-candidates removed)
+                 (cl-destructuring-bind (new-candidates removed)
                      (pcomplete-declare-remove-positional-candidate candidates)
                    (setq candidates new-candidates
                          prev removed))))
@@ -378,16 +377,16 @@ In %S" (plist-get result :names))
     (candidates parse-function stop-sequence)
   ""
   (let (result)
-    (loop for rcandidate on candidates
-          for candidate = (car rcandidate)
-          if (consp candidate)
-          do (push (funcall parse-function candidate) result)
-          else if (memq candidate stop-sequence)
-          return (values (cdr rcandidate)
-                         result
-                         candidate)
-          else do (error "Unexpected parameter %S" candidate)
-          finally return (values nil result nil))))
+    (cl-loop for rcandidate on candidates
+             for candidate = (car rcandidate)
+             if (consp candidate)
+             do (push (funcall parse-function candidate) result)
+             else if (memq candidate stop-sequence)
+             return (cl-values (cdr rcandidate)
+                               result
+                               candidate)
+             else do (error "Unexpected parameter %S" candidate)
+             finally return (cl-values nil result nil))))
 
 (defun pcomplete-declare-parse-candidates (candidates)
   ""
@@ -396,11 +395,11 @@ In %S" (plist-get result :names))
         (stop-sequence '(&option &positional &subcommand))
         (parse-function #'pcomplete-declare-parse-flag))
     (while (not (null candidates))
-      (destructuring-bind (cands res next)
+      (cl-destructuring-bind (cands res next)
           (pcomplete-declare-parse-candidate-group candidates
                                                    parse-function
                                                    stop-sequence)
-        (case next
+        (cl-case next
           (&option
            (setq stop-sequence '(&positional &subcommand)
                  parse-function #'pcomplete-declare-parse-option))
@@ -429,6 +428,7 @@ In %S" (plist-get result :names))
   ""
   (intern (concat "pcomplete/" (symbol-name command))))
 
+;;;###autoload
 (defmacro pcomplete-declare (command &rest candidates)
   ""
   (declare (indent defun))
@@ -437,7 +437,8 @@ In %S" (plist-get result :names))
            `(,(car candidates)
              (pcomplete-declare-run-completions
               ',(pcomplete-declare-parse-candidates (cdr candidates))))
-         `((pcomplete-declare-run-completions
+         `(,(concat "Completions for " (symbol-name command) " command.")
+           (pcomplete-declare-run-completions
             ',(pcomplete-declare-parse-candidates candidates))))))
 
 (provide 'pcomplete-declare)
