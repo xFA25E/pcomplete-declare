@@ -1,7 +1,7 @@
 # pcomplete-declare
 Define your shell completions in a declarative way
 
-It provides a macro pcomplete-declare with uses internally the
+It provides a macro pcomplete-declare which uses internally the
 pcomplete library. So, it should work with eshell and shell.
 
 # Example usage
