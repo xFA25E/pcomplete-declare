@@ -4,6 +4,31 @@
   It provides a macro pcomplete-declare which uses internally the
   pcomplete library. So, it should work with eshell and shell.
 
+* Completions
+
+  This package contains already defined completions for some commands.
+  Also, if you don't want to use some of the defined completions,
+  there are two variables that manage loading.
+
+  - pcomplete-declare-completions-whitelist
+  - pcomplete-declare-completions-blacklist
+
+  By default, the whitelist has value :all, so you can disable some
+  commands by adding them to blacklist. If you make whitelist a list,
+  blacklist will not be considered.
+
+** use-package example
+   #+BEGIN_SRC emacs-lisp
+     (use-package pcomplete-declare-completions
+       :requires pcomplete-declare
+
+       :demand t
+
+       :custom
+       (pcomplete-declare-completions-whitelist :all)
+       (pcomplete-declare-completions-blacklist '(echo fd)))
+   #+END_SRC
+
 * Example usage
   #+BEGIN_SRC emacs-lisp
     (pcomplete-declare mycommand
