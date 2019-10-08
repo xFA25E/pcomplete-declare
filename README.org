@@ -42,88 +42,18 @@
   #+BEGIN_SRC emacs-lisp
     (pcomplete-declare mycommand
       "This defines completion for mycommand"
-      '((o -option-long :help "my flag help")
-        (-boolean-flag :help "help message" :multiple t)
-        &option
-        (f :completions :file)
-        (c -custom-option -alias-for-custom :completions '("bong" "wong"))
-        (d -directory-long :multiple t :completions :directory)
-        (w -why-not-function :multiple t :completions #'some-function)
-        &positional
-        (:completions :executable :help "take an executable")
-        (:completions :file :multiple t)
-        &subcommand
-        (subcommand1 :help "hello"
-                     (t -tig-tog :multiple t)
-                     &option
-                     (e :completions :executable)
-                     &positional
-                     (:completions :executable)
-                     (:completions :directory :multiple t))
-        (subcommand2 (-my-flag))))
-  #+END_SRC
-
-  Doc string is optional
-  #+BEGIN_SRC emacs-lisp
-      "This defines completion for mycommand"
-  #+END_SRC
-    (pcomplete-declare mycommand
-      "This defines completion for mycommand" ; optional doc for a function
-
-      ;; Omit first "-" for flags and options. They will be added
-      ;; automatically. This ensures that all flags and options will start
-      ;; with a dash.
-
-      ;; You can optionally add :help property with a string to every
-      ;; completion candidate. The message will be displayed by calling
-      ;; (pcomplete-help)
-
-      ;; Definitions should be in the following order:
-      ;; flags, options, positional arguments, subcommands
-
-      ;; We start with flags. They have no arguments.
-      ;; The syntax is as follows:
-      ;; (NAMES... [:help MESSAGE] [:multiple BOOL])
-
-      ;; If you add :multiple property, the flag won't be removed
-      ;; from completion list
       (o -option-long :help "my flag help")
       (-boolean-flag :help "help message" :multiple t)
-      ;; End of flag definitions
-
-      ;; An option take an argument, so :completions property is mandatory
-      ;; :completions can be:
-      ;; - A function that returns completions
-      ;; - A list with completions
-      ;; - A keyword: :file, :directory or :executable
-      ;;   :file - can complete everything on the file system
-      ;;   :directory - will filter results for directories
-
-      ;; Options can be multiple too
       &option
       (f :completions :file)
       (c -custom-option -alias-for-custom :completions '("bong" "wong"))
       (d -directory-long :multiple t :completions :directory)
       (w -why-not-function :multiple t :completions #'some-function)
-      ;; End of option definitions
-
-      ;; Positionals are arguments that don't have a flag or an option.
-      ;; For example, you can have the following command syntax:
-      ;; $ mycommand EXECUTABLE FILE...
-      ;; This can be achieved with the following definitions
       &positional
       (:completions :executable :help "take an executable")
       (:completions :file :multiple t)
-      ;; Only the last positional can be multiple
-      ;; End of positional definitions
-
-      ;; Also, you can define subcommands. Like "git add" etc. After
-      ;; entering in the subcommand completions, previous completions
-      ;; won't appear in the list of candidates
       &subcommand
-      ;; Important: :help property should immediately after the subcommand name
       (subcommand1 :help "hello"
-                   ;; The syntax is the same as with command
                    (t -tig-tog :multiple t)
                    &option
                    (e :completions :executable)
@@ -132,3 +62,84 @@
                    (:completions :directory :multiple t))
       (subcommand2 (-my-flag)))
   #+END_SRC
+
+  Doc string is optional
+  #+BEGIN_SRC emacs-lisp
+    "This defines completion for mycommand"
+  #+END_SRC
+
+  Candidates MUST be defined in the followig order:
+  flags -> options -> positional arguments -> subcommands
+
+  For flags and options you MUST omit the leading dash ("-")
+
+  You can optionally add a :help property to any candidate with a
+  string which can be displayed by calling pcomplete-help command
+
+  You can start defining flags right after command name. The syntax is
+  this:
+  #+BEGIN_SRC emacs-lisp
+    (NAME1 NAME2 .. NAMEN [:help STRING] [:multiple BOOL])
+    (NAME1 NAME2 .. NAMEN [:help STRING] [:multiple BOOL])
+    ...
+  #+END_SRC
+  All the names are aliases of the same flag. This enables support for
+  short and long flags. If the macro encounters a (b -bool-flag), it
+  will interpret it as ("-b" "--bool-flag")
+
+  :multiple property allows a candidate to be completed multiple
+  times. Otherwise, it will be removed from completion list if the
+  flag is already in the command arguments.
+
+  An option is like flag, but it takes an argument. To define an
+  option, you MUST start with the &option symbol (like in the example
+  above). The option syntax is the same as the flag syntax, except
+  that it takes a MANDATORY property :completions which will specify
+  option's argument completion.
+  #+BEGIN_SRC emacs-lisp
+    &option
+    (NAME1 NAME2 .. NAMEN :completions TYPE [:help STRING] [:multiple BOOL])
+    (NAME1 NAME2 .. NAMEN :completions TYPE [:help STRING] [:multiple BOOL])
+    ...
+  #+END_SRC
+
+  :completions TYPE can be:
+  - One of the following keywords:
+    + :directory  - completes for directory
+    + :file       - completes for any file
+    + :executable - completes for executables
+  - A function that returns a list of strings. Option argument will be
+    completed against this list.
+  - A list of strings (or a variable with list of strings).
+
+  You can define positional arguments. Those are the arguments that
+  must follow specific order. To define these, you MUST start with
+  &positional symbol
+  #+BEGIN_SRC emacs-lisp
+    &positional
+    (:completions TYPE [:help STRING])
+    (:completions TYPE [:help STRING])
+    ...
+    (:completions TYPE [:help STRING] [:multiple BOOL])
+  #+END_SRC
+
+  :completions property is the same as in options. Also, only the last
+  positional argument is allowed to be :multiple.
+
+  You can, also, define subcommands (like git add|commit). Usually
+  subcommands have their own set of flags, options, positionals and
+  subcommands. As soon as, pcomplete-declare detects that a subcommand
+  was given as argument, it removes all previous completion candidates
+  and leaves only the subcommands's ones.
+
+  Subcommands start with &subcommand symbol.
+  #+BEGIN_SRC emacs-lisp
+    &subcommand
+    (subcommand1 [:help STRING]
+                 candidates...)
+    (subcommand2 [:help STRING]
+                 candidates...)
+    ...
+  #+END_SRC
+
+  Subcommand candidates follow the same syntax (look example).
