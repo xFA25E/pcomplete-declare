@@ -5,7 +5,6 @@
   pcomplete library. So, it should work with eshell and shell.
 
 * Completions
-
   This package contains already defined completions for some commands.
   Also, if you don't want to use some of the defined completions,
   there are two variables that manage loading.
@@ -16,7 +15,6 @@
   By default, the whitelist has value :all, so you can disable some
   commands by adding them to blacklist. If you make whitelist a list,
   blacklist will not be considered.
-
 ** use-package example
    #+BEGIN_SRC emacs-lisp
      (use-package pcomplete-declare-completions
@@ -28,9 +26,47 @@
        (pcomplete-declare-completions-whitelist :all)
        (pcomplete-declare-completions-blacklist '(echo fd)))
    #+END_SRC
-
-* Example usage
+** Supported completions
+   - dash
+   - date
+   - echo
+   - fd
+   - head
+   - nl
+   - pwd
+   - pwgen
+   - sxhkd
+   - tail
+   - uniq
+* Example of pcomplete-declare
   #+BEGIN_SRC emacs-lisp
+    (pcomplete-declare mycommand
+      "This defines completion for mycommand"
+      '((o -option-long :help "my flag help")
+        (-boolean-flag :help "help message" :multiple t)
+        &option
+        (f :completions :file)
+        (c -custom-option -alias-for-custom :completions '("bong" "wong"))
+        (d -directory-long :multiple t :completions :directory)
+        (w -why-not-function :multiple t :completions #'some-function)
+        &positional
+        (:completions :executable :help "take an executable")
+        (:completions :file :multiple t)
+        &subcommand
+        (subcommand1 :help "hello"
+                     (t -tig-tog :multiple t)
+                     &option
+                     (e :completions :executable)
+                     &positional
+                     (:completions :executable)
+                     (:completions :directory :multiple t))
+        (subcommand2 (-my-flag))))
+  #+END_SRC
+
+  Doc string is optional
+  #+BEGIN_SRC emacs-lisp
+      "This defines completion for mycommand"
+  #+END_SRC
     (pcomplete-declare mycommand
       "This defines completion for mycommand" ; optional doc for a function
 
@@ -51,48 +87,48 @@
 
       ;; If you add :multiple property, the flag won't be removed
       ;; from completion list
-      '((o -option-long :help "my flag help")
-        (-boolean-flag :help "help message" :multiple t)
-        ;; End of flag definitions
+      (o -option-long :help "my flag help")
+      (-boolean-flag :help "help message" :multiple t)
+      ;; End of flag definitions
 
-        ;; An option take an argument, so :completions property is mandatory
-        ;; :completions can be:
-        ;; - A function that returns completions
-        ;; - A list with completions
-        ;; - A keyword: :file, :directory or :executable
-        ;;   :file - can complete everything on the file system
-        ;;   :directory - will filter results for directories
+      ;; An option take an argument, so :completions property is mandatory
+      ;; :completions can be:
+      ;; - A function that returns completions
+      ;; - A list with completions
+      ;; - A keyword: :file, :directory or :executable
+      ;;   :file - can complete everything on the file system
+      ;;   :directory - will filter results for directories
 
-        ;; Options can be multiple too
-        &option
-        (f :completions :file)
-        (c -custom-option -alias-for-custom :completions '("bong" "wong"))
-        (d -directory-long :multiple t :completions :directory)
-        (w -why-not-function :multiple t :completions #'some-function)
-        ;; End of option definitions
+      ;; Options can be multiple too
+      &option
+      (f :completions :file)
+      (c -custom-option -alias-for-custom :completions '("bong" "wong"))
+      (d -directory-long :multiple t :completions :directory)
+      (w -why-not-function :multiple t :completions #'some-function)
+      ;; End of option definitions
 
-        ;; Positionals are arguments that don't have a flag or an option.
-        ;; For example, you can have the following command syntax:
-        ;; $ mycommand EXECUTABLE FILE...
-        ;; This can be achieved with the following definitions
-        &positional
-        (:completions :executable :help "take an executable")
-        (:completions :file :multiple t)
-        ;; Only the last positional can be multiple
-        ;; End of positional definitions
+      ;; Positionals are arguments that don't have a flag or an option.
+      ;; For example, you can have the following command syntax:
+      ;; $ mycommand EXECUTABLE FILE...
+      ;; This can be achieved with the following definitions
+      &positional
+      (:completions :executable :help "take an executable")
+      (:completions :file :multiple t)
+      ;; Only the last positional can be multiple
+      ;; End of positional definitions
 
-        ;; Also, you can define subcommands. Like "git add" etc. After
-        ;; entering in the subcommand completions, previous completions
-        ;; won't appear in the list of candidates
-        &subcommand
-        ;; Important: :help property should immediately after the subcommand name
-        (subcommand1 :help "hello"
-                     ;; The syntax is the same as with command
-                     (t -tig-tog :multiple t)
-                     &option
-                     (e :completions :executable)
-                     &positional
-                     (:completions :executable)
-                     (:completions :directory :multiple t))
-        (subcommand2 (-my-flag))))
+      ;; Also, you can define subcommands. Like "git add" etc. After
+      ;; entering in the subcommand completions, previous completions
+      ;; won't appear in the list of candidates
+      &subcommand
+      ;; Important: :help property should immediately after the subcommand name
+      (subcommand1 :help "hello"
+                   ;; The syntax is the same as with command
+                   (t -tig-tog :multiple t)
+                   &option
+                   (e :completions :executable)
+                   &positional
+                   (:completions :executable)
+                   (:completions :directory :multiple t))
+      (subcommand2 (-my-flag)))
   #+END_SRC
