@@ -395,7 +395,78 @@ METHOD={separate(default),prepend,append,both}")
       (s -skip-chars :completions '("NUMBER") :help "\
 avoid comparing the first N characters")
       (w -check-chars :completions '("NUMBER") :help "\
-compare no more than N characters in lines"))))
+compare no more than N characters in lines")))
+
+  (when (load-function-p 'sxhkd)
+    (pcomplete-declare sxhkd
+      (h :help "Print the synopsis to standard output and exit.")
+      (v :help "Print the version information to standard output and exit.")
+
+      &option
+      (m :completions '("COUNT")
+         :help "Handle the first COUNT mapping notify events.")
+      (t :completions '("TIMEOUT")
+         :help "Timeout in seconds for the recording of chord chains.")
+      (c :completions :file
+         :help "Read the main configuration from the given file.")
+      (r :completions :file
+         :help "Redirect the commands output to the given file.")
+      (s :completions :file
+         :help "Output status information to the given FIFO.")
+      (a :completions '("ABORTKEYSYM")
+         :help "Name of the keysym used for aborting chord chains.")))
+
+  (when (load-functon-p 'dash)
+    (pcomplete-declare dash
+      (a :help "Export all variables assigned to.")
+      (C :help "Don't overwrite existing files with “>”.")
+      (e :help "\
+If not interactive, exit immediately if any untested command fails. The exit
+status of a command is considered to be explicitly tested if the command is used
+to control an if, elif, while, or until; or if the command is the left hand
+operand of an “&&” or “||” operator.")
+      (f :help "Disable pathname expansion.")
+      (n :help "
+If not interactive, read commands but do not execute them. This is useful for
+checking the syntax of shell scripts.")
+      (u :help "\
+Write a message to standard error when attempting to expand a variable that is
+not set, and if the shell is not interactive, exit immediately.")
+      (v :help "\
+The shell writes its input to standard error as it is read. Use‐ ful for
+debugging.")
+      (x :help "\
+Write each command to standard error (preceded by a ‘+ ’) before it is executed.
+Useful for debugging.")
+      (I :help "Ignore EOF's from input when interactive.")
+      (i :help "Force the shell to behave interactively.")
+      (m :help "Turn on job control (set automatically when interactive).")
+      (q)
+      (V :help "\
+Enable the built-in vi(1) command line editor (disables -E if it has been set).")
+      (E :help "\
+Enable the built-in emacs(1) command line editor (disables -V if it has been
+set).")
+      (b :help "\
+Enable asynchronous notification of background job completion. (UNIMPLEMENTED
+for 4.4alpha)")
+      (s :help "\
+Read commands from standard input (set automatically if no file arguments are
+present). This option has no effect when set after the shell has already started
+running (i.e. with set).")
+
+      &option
+      (o :completions '("errexit" "noglob" "ignoreeof" "interactive"
+                        "monitor" "noexec" "stdin" "xtrace" "verbose"
+                        "vi" "emacs" "noclobber" "allexport" "notify"
+                        "nounset" "nolog" "debug")
+         :help "Dash options")
+      (c :completions '("COMMANDSTRING") :help "\
+Read commands from the command_string operand instead of from the standard
+input. Special parameter 0 will be set from the command_name operand and the
+positional parameters ($1, $2, etc.) set from the remaining argument operands."))))
+
+
 
 (provide 'pcomplete-declare-completions)
 ;;; pcomplete-declare-completions.el ends here
