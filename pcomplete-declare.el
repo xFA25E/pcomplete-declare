@@ -22,7 +22,6 @@
 
 ;; TODO: check for unique flag and option names
 ;; TODO: write good documentation
-;; little change
 
 ;;; Code:
 
