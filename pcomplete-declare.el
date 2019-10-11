@@ -388,6 +388,22 @@ In %S" (plist-get result :names))
              else do (error "Unexpected parameter %S" candidate)
              finally return (cl-values nil result nil))))
 
+(defun pcomplete-declare-validate-unique-flags-options (candidates)
+  ""
+  (let ((completions (pcomplete-declare-make-flag-option-completions
+                      candidates)))
+    (when (/= (length completions)
+              (length (cl-remove-duplicates completions
+                                            :test #'string-equal)))
+      (error "Duplicate options or flags!")))
+
+  (let ((subcommands (pcomplete-declare-make-subcommand-completions
+                      candidates)))
+    (dolist (subcommand subcommands)
+      (pcomplete-declare-validate-unique-flags-options
+       (plist-get (pcomplete-declare-subcommand subcommand candidates)
+                  :candidates)))))
+
 (defun pcomplete-declare-parse-candidates (candidates)
   ""
   (let (result
@@ -421,6 +437,8 @@ In %S" (plist-get result :names))
         (setq prev next
               candidates cands
               result (append result res))))
+
+    (pcomplete-declare-validate-unique-flags-options result)
 
     result))
 
