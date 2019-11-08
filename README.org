@@ -18,6 +18,7 @@
   - tail
   - uniq
   - grep
+  - magento (partially)
 * Example of pcomplete-declare
   More examples in /pcomplete-declare-completions.el/
   #+BEGIN_SRC emacs-lisp
