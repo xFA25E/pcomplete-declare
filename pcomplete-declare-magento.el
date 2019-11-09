@@ -1,4 +1,4 @@
-;;; pcomplete-declare-magento.el --- Magento completions  -*- lexical-binding: t; -*-
+;;; pcomplete-declare-magento.el --- Completions for magento  -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2019
 

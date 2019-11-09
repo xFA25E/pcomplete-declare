@@ -1,4 +1,4 @@
-;;; pcomplete-declare-dash.el --- Completions fo dashr -*- lexical-binding: t; -*-
+;;; pcomplete-declare-dash.el --- Completions for dash -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2019
 
