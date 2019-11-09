@@ -20,7 +20,7 @@
   - grep
   - magento (partially)
 * Example of pcomplete-declare
-  More examples in /pcomplete-declare-completions.el/
+  More examples in /pcomplete-declare-*.el/
   #+BEGIN_SRC emacs-lisp
     (pcomplete-declare mycommand
       "This defines completion for mycommand"
