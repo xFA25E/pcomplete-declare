@@ -34,10 +34,16 @@
 
 (defun pcomplete-declare-display-help-buffer (help)
   "Display `HELP' message in a window."
-  (with-current-buffer-window
-   "*Pcomplete Declare Help*" nil nil
-   (insert help)
-   (special-mode)))
+  (pop-to-buffer (get-buffer-create "*Pcomplete Declare Help*")
+                 '((display-buffer-reuse-window)
+                   (inhibit-same-window . nil)
+                   (reusable-frames . visible)))
+  (let ((buffer-read-only nil))
+    (erase-buffer)
+    (insert help))
+  (special-mode)
+
+  "")
 
 (defun pcomplete-declare-maybe-help (message)
   "Show help `MESSAGE' if `pcomplete-help' was called."
