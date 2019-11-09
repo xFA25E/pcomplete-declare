@@ -31,10 +31,21 @@
   "Check if `STRING' is in `SEQUENCE'."
   (cl-some (lambda (name) (string-equal string name)) sequence))
 
+
+(defun pcomplete-declare-display-help-buffer (help)
+  "Display `HELP' message in a window."
+  (with-current-buffer-window
+   "*Pcomplete Declare Help*" nil nil
+   (insert help)
+   (special-mode)))
+
 (defun pcomplete-declare-maybe-help (message)
   "Show help `MESSAGE' if `pcomplete-help' was called."
   (when pcomplete-show-help
-    (let ((pcomplete-help (list 'identity (or message ""))))
+    (let ((pcomplete-help
+           (if (<= (count ?\n message) 10)
+               (list 'identity (or message ""))
+             (list 'pcomplete-declare-display-help-buffer (or message "")))))
       (pcomplete--help)
       (throw 'pcompleted t))))
 
