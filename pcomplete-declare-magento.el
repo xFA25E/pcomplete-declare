@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2019
 
-;; Author:  <>
+;; Author: xFA25E
 ;; Keywords: extensions
 
 ;; This program is free software; you can redistribute it and/or modify
