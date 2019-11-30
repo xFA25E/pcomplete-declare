@@ -49,9 +49,7 @@
   "Show help `MESSAGE' if `pcomplete-help' was called."
   (when pcomplete-show-help
     (let ((pcomplete-help
-           (if (<= (count ?\n message) 10)
-               (list 'identity (or message ""))
-             (list 'pcomplete-declare-display-help-buffer (or message "")))))
+           (list 'pcomplete-declare-display-help-buffer (or message ""))))
       (pcomplete--help)
       (throw 'pcompleted t))))
 
@@ -66,7 +64,7 @@
   (cond ((eq type :directory)
          (pcomplete-dirs))
         ((eq type :file)
-         (pcomplete-entries))
+         (pcomplpete-entries))
         ((eq type :executable)
          (pcomplete-executables))
         ((functionp (eval type))
