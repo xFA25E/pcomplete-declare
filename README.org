@@ -19,6 +19,8 @@
   - uniq
   - grep
   - magento (partially)
+  - base16_theme
+  - scrot
 * Example of pcomplete-declare
   More examples in /pcomplete-declare-*.el/
   #+BEGIN_SRC emacs-lisp
