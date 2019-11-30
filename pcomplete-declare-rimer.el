@@ -29,7 +29,8 @@
 (defun pcomplete-declare-rimer-timer-names ()
   "Get current running timer names."
   (let ((result (pcomplete-process-result "rimer" "remote" "report")))
-    (unless (string-empty-p result)
+    (if (string-empty-p result)
+        (list "TIMER")
       (cl-loop for line in (split-string result "\n")
                collect (first (split-string line " "))))))
 
