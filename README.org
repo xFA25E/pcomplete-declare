@@ -21,6 +21,7 @@ library. So, it should work with eshell and shell.
   - magento (partially)
   - base16_theme
   - scrot
+  - rimer
 * Example of pcomplete-declare
   More examples in /pcomplete-declare-*.el/
   #+BEGIN_SRC emacs-lisp
