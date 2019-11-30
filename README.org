@@ -1,8 +1,8 @@
-* pcomplete-declare
-  Define your shell completions in a declarative way
+#+TITLE: pcomplete-declare
+Define your shell completions in a declarative way
 
-  It provides a macro pcomplete-declare which uses internally the
-  pcomplete library. So, it should work with eshell and shell.
+It provides a macro pcomplete-declare which uses internally the pcomplete
+library. So, it should work with eshell and shell.
 
 * Completions
   This package contains already defined completions for some commands:
@@ -126,3 +126,5 @@
   #+END_SRC
 
   Subcommand candidates follow the same syntax (look example).
+* Notes
+  Let me know if you find some bug. Also, contributions welcome.
