@@ -64,7 +64,7 @@
   (cond ((eq type :directory)
          (pcomplete-dirs))
         ((eq type :file)
-         (pcomplpete-entries))
+         (pcomplete-entries))
         ((eq type :executable)
          (pcomplete-executables))
         ((functionp (eval type))
