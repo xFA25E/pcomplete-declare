@@ -26,13 +26,14 @@
 
 (require 'pcomplete-declare)
 
-(defun pcomplete-declare-rimer-timer-names ()
-  "Get current running timer names."
-  (let ((result (pcomplete-process-result "rimer" "remote" "report")))
-    (if (string-empty-p result)
-        (list "TIMER")
-      (cl-loop for line in (split-string result "\n")
-               collect (first (split-string line " "))))))
+(eval-and-compile
+  (defun pcomplete-declare-rimer-timer-names ()
+    "Get current running timer names."
+    (let ((result (pcomplete-process-result "rimer" "remote" "report")))
+      (if (string-empty-p result)
+          (list "TIMER")
+        (cl-loop for line in (split-string result "\n")
+                 collect (first (split-string line " ")))))))
 
 ;;;###autoload (autoload 'pcomplete/rimer "pcomplete-declare-rimer")
 (pcomplete-declare rimer
