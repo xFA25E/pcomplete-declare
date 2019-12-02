@@ -26,21 +26,22 @@
 
 (require 'pcomplete-declare)
 
-(defun pcomplete-declare-base16_theme-configs ()
-  "Get list of available base16_theme themes."
-  (split-string (pcomplete-process-result "base16_theme" "list_configs") "\n"))
+(eval-and-compile
+  (defun pcomplete-declare-base16_theme-configs ()
+    "Get list of available base16_theme themes."
+    (split-string (pcomplete-process-result "base16_theme" "list_configs") "\n"))
 
-(defun pcomplete-declare-base16_theme-themes ()
-  "Get list of available base16_theme themes."
-  (split-string (pcomplete-process-result "base16_theme" "list_themes") "\n"))
+  (defun pcomplete-declare-base16_theme-themes ()
+    "Get list of available base16_theme themes."
+    (split-string (pcomplete-process-result "base16_theme" "list_themes") "\n"))
 
-(defun pcomplete-declare-base16_theme-theme-files ()
-  "Get list of available base16_theme themes."
-  (split-string (pcomplete-process-result "base16_theme" "list_files" (pcomplete-arg 'first 2)) "\n"))
+  (defun pcomplete-declare-base16_theme-theme-files ()
+    "Get list of available base16_theme themes."
+    (split-string (pcomplete-process-result "base16_theme" "list_files" (pcomplete-arg 'first 2)) "\n"))
 
-(defun pcomplete-declare-base16_theme-templates ()
-  "Get list of available base16_theme themes."
-  (split-string (pcomplete-process-result "base16_theme" "list_templates") "\n"))
+  (defun pcomplete-declare-base16_theme-templates ()
+    "Get list of available base16_theme themes."
+    (split-string (pcomplete-process-result "base16_theme" "list_templates") "\n")))
 
 ;;;###autoload (autoload 'pcomplete/base16_theme "pcomplete-declare-base16_theme")
 (pcomplete-declare base16_theme
