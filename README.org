@@ -8,7 +8,6 @@ library. So, it should work with eshell and shell.
   This package contains already defined completions for some commands:
   - dash
   - echo
-  - head
   - sxhkd
   - magento (partially)
   - base16_theme
