@@ -6,13 +6,14 @@ library. So, it should work with eshell and shell.
 
 * Completions
   This package contains already defined completions for some commands:
+  - base16_theme
   - dash
   - echo
-  - sxhkd
   - magento (partially)
-  - base16_theme
-  - scrot
+  - mpop
   - rimer
+  - scrot
+  - sxhkd
 * Example of pcomplete-declare
   More examples in /pcomplete-declare-*.el/
   #+BEGIN_SRC emacs-lisp
