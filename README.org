@@ -6,6 +6,7 @@ library. So, it should work with eshell and shell.
 
 * Completions
   This package contains already defined completions for some commands:
+  - abduco
   - base16_theme
   - dash
   - echo
