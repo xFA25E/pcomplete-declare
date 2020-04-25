@@ -28,52 +28,52 @@
 
 ;;;###autoload (autoload 'pcomplete/scrot "pcomplete-declare-scrot")
 (pcomplete-declare scrot
-  (h -help :help "Display help output and exit.")
+  (-help :help "Display help output and exit.")
 
-  (v -version :help "Output version information and exit.")
+  (-version :help "Output version information and exit.")
 
-  (a -autoselect :help "Non-interactively choose a rectangle of x,y,w,h.")
+  (-autoselect :help "Non-interactively choose a rectangle of x,y,w,h.")
 
-  (b --border :help "When selecting a window, grab wm border too.")
+  (--border :help "When selecting a window, grab wm border too.")
 
-  (c --count :help "Display a countdown when used with delay.")
+  (--count :help "Display a countdown when used with delay.")
 
-  (m --multidisp :help "\
+  (--multidisp :help "\
 For multiple heads, grab shot from each and join them together.")
 
-  (s --select :help "\
+  (--select :help "\
 Interactively select a window or rectangle with the mouse.
 See  -l and -f options.")
 
-  (l --line :help "\
+  (--line :help "\
 Indicates  the  style  of the line when the -s option is used.
 See SELECTION STYLE.")
 
-  (f --freeze :help "Freeze the screen when the -s option is used.")
+  (--freeze :help "Freeze the screen when the -s option is used.")
 
-  (u --focused :help "Use the currently focused window.")
+  (--focused :help "Use the currently focused window.")
 
-  (z --silent :help "Prevent beeping.")
+  (--silent :help "Prevent beeping.")
 
-  (p --pointer :help "Capture the mouse pointer.")
+  (--pointer :help "Capture the mouse pointer.")
 
-  (o --overwrite :help "\
+  (--overwrite :help "\
 By default scrot does not overwrite the files, use this  option  to allow it.")
 
-  (n --note :help "Draw a text note. See NOTE FORMAT.")
+  (--note :help "Draw a text note. See NOTE FORMAT.")
 
   &option
-  (t --thumb :completions '("NUMorGEOM") :help "\
+  (--thumb :completions '("NUMorGEOM") :help "\
 Generate thumbnail too. NUM is the percentage of the original size for the
 thumbnail to be. Alternatively, a GEOMetry can be specified, example: 300x200")
 
-  (d --delay :completions '("NUM")
-     :help "Wait NUM seconds before taking a shot.")
+  (--delay :completions '("NUM")
+           :help "Wait NUM seconds before taking a shot.")
 
-  (e --exec :completions '("COMMAND") :help "\
+  (--exec :completions '("COMMAND") :help "\
 Exec COMMAND on the saved image. See filename help for more details")
 
-  (q -quality :completions '("NUM") :help "\
+  (-quality :completions '("NUM") :help "\
 Image quality (1-100) high value means high size, low compression. Default: 75.
 (Effect differs depending on file format chosen).")
 
