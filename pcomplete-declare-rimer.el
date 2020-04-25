@@ -29,7 +29,7 @@
 (eval-and-compile
   (defun pcomplete-declare-rimer-timer-names ()
     "Get current running timer names."
-    (let ((result (pcomplete-process-result "rimer" "remote" "report")))
+    (let ((result (pcomplete-process-result "rimer" "report")))
       (if (string-empty-p result)
           (list "TIMER")
         (cl-loop for line in (split-string result "\n")
@@ -37,41 +37,23 @@
 
 ;;;###autoload (autoload 'pcomplete/rimer "pcomplete-declare-rimer")
 (pcomplete-declare rimer
-  (h -help :help "Prints help information")
-  (V -version :help "Prints version information")
-
-  &subcommand
-  (help :help "Prints this message or the help of the given subcommand(s)"
-        &positional
-        (:completions '("help" "daemon" "remote")
-                      :help "The subcommand whose help message to display"))
-  (daemon :help "Starts main background process"
-          &positional
-          (:completions :executable :help "\
-Updater is a program that will be executed on every timer step (see remote
-subcommand). This program should take 4 command line arguments in the following
-order:
-
-$ <UPDATER> <name> <kind> <time elapsed> <duration> <state>
-
-State can be \"running\", \"paused\" or \"halted\" Kind can be \"countdown\" or
-\"stopwatch\". In case the kind is a \"stopwatch\" the duration will be a max
-u64. It's okey because max u64 is bigger than the human lifetime."))
-
-  (remote :help "\
-This subcommand manages main rimer process. It can add, pause, resume and halt
-timers."
-          &option
-          (d -duration :completions '("SECS") :help "Seconds to run")
-          (s -step :completions '("SECS") :help "\
+  (-help :help "Prints help information")
+  (-version :help "Prints version information")
+  &option
+  (-name :completions #'pcomplete-declare-rimer-timer-names :help "Timer name")
+  (-duration :completions '("SECS") :help "Seconds to run")
+  (-step :completions '("SECS") :help "\
 Updater is executed every <SECS> seconds [default: 10]")
+  &positional
+  (:completions '("start" "add" "pause" "halt" "resume" "report" "quit")
+                :help "Command")
+  (:completions :executable :help "\
+Updater is a program that will be executed on every timer step. This
+program should take 4 command line arguments in the following order:
 
-          &positional
-          (:completions '("stopwatch" "countdown" "pause" "halt" "resume"
-                          "report" "quit")
-                        :help "Remote command")
-          (:completions #'pcomplete-declare-rimer-timer-names
-                        :help "Timer name")))
+$ <UPDATER> <name> <elapsed time> <total duration> <state>
+
+State can be \"running\", \"paused\" or \"halted\""))
 
 (provide 'pcomplete-declare-rimer)
 ;;; pcomplete-declare-rimer.el ends here
