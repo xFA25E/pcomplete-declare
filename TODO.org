@@ -2,3 +2,4 @@
   It ruins the API because you have to use eval-when-compile every time you want
   to use a function as a completion.
 * Rewrite candidates using some sort of defstruct
+  defgeneric?
