@@ -3,3 +3,5 @@
   to use a function as a completion.
 * Rewrite candidates using some sort of defstruct
   defgeneric?
+* declare order should not be strict
+  allow &option after &subcommand etc
