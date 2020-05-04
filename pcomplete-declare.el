@@ -331,14 +331,7 @@ Throws an error if the format is invalid"
                    (plist-get result :names))
           (setq result (cons :multiple (cons multiple result)))))
 
-    (if-let ((completions (plist-get keywords :completions)))
-        (if (not (or (functionp completions)
-                     (memq completions '(:directory :file :executable))
-                     (listp completions)))
-            (error "Completion property should be a function or a list or one of
-the following keywords: :directory :file :executable.
-In %S" (plist-get result :names))
-          (setq result (cons :completions (cons completions result))))
+    (when (not (plist-get keywords :completions))
       (error "In option %S should be present a completion flag"
              (plist-get result :names)))
 
@@ -362,14 +355,7 @@ Throws an error if the format is invalid"
                    (plist-get result :names))
           (setq result (cons :multiple (cons multiple result)))))
 
-    (if-let ((completions (plist-get keywords :completions)))
-        (if (not (or (memq completions '(:directory :file :executable))
-                     (functionp (eval completions))
-                     (listp (eval completions))))
-            (error "Completion property should be a function or a list or one of
-the following keywords: :directory :file :executable.
-In %S" (plist-get result :names))
-          (setq result (cons :completions (cons completions result))))
+    (when (not (plist-get keywords :completions))
       (error "In option %S should be present a completion flag"
              (plist-get result :names)))
 
