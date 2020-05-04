@@ -26,17 +26,16 @@
 
 (require 'pcomplete-declare)
 
-(eval-and-compile
-  (defun pcomplete-declare-mpop-accounts ()
-    "Get mpop accounts."
-    (let ((result (pcomplete-process-result "mpop" "--pretend" "--all-accounts")))
-      (if (string-empty-p result)
-          '("ACCOUNT")
-        (cl-loop for line in (split-string result "\n")
-                 if (string-match (rx string-start "using account "
-                                      (group (one-or-more alnum)))
-                                  line)
-                 collect (match-string 1 line))))))
+(defun pcomplete-declare-mpop-accounts ()
+  "Get mpop accounts."
+  (let ((result (pcomplete-process-result "mpop" "--pretend" "--all-accounts")))
+    (if (string-empty-p result)
+        '("ACCOUNT")
+      (cl-loop for line in (split-string result "\n")
+               if (string-match (rx string-start "using account "
+                                    (group (one-or-more alnum)))
+                                line)
+               collect (match-string 1 line)))))
 
 ;;;###autoload (autoload 'pcomplete/rimer "pcomplete-declare-mpop")
 (pcomplete-declare mpop

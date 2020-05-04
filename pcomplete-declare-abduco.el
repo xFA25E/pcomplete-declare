@@ -26,12 +26,11 @@
 
 (require 'pcomplete-declare)
 
-(eval-and-compile
-  (defun pcomplete-declare-abduco-list-sessions ()
-    "Get abduco sessions"
-    (mapcar (lambda (line) (car (last (split-string line))))
-            (cdr (split-string (pcomplete-process-result "abduco" "-l")
-                               "\n")))))
+(defun pcomplete-declare-abduco-list-sessions ()
+  "Get abduco sessions."
+  (mapcar (lambda (line) (car (last (split-string line))))
+          (cdr (split-string (pcomplete-process-result "abduco" "-l")
+                             "\n"))))
 
 ;;;###autoload (autoload 'pcomplete/abduco "pcomplete-declare-abduco")
 (pcomplete-declare abduco

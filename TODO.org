@@ -5,3 +5,6 @@
   defgeneric?
 * declare order should not be strict
   allow &option after &subcommand etc
+  add &flag for this
+* also apply data oriented programming
+* make so as if everything was a subcommand

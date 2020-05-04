@@ -54,7 +54,7 @@
       (throw 'pcompleted t))))
 
 (defun pcomplete-declare-make-completions (type)
-  "Make completions auto of :completions property in a candidate.
+  "Make completions by :completions property in a candidate.
 `TYPE' can be:
 - :directory
 - :file
@@ -217,23 +217,21 @@ This function provides all the completions on `CANDIDATES'"
                  (setq candidates new-candidates
                        prev removed)))
 
-              ((not (eq (plist-get before-prev :type) :option))
-               (if (pcomplete-declare-subcommand-p arg candidates)
+              ((eq (plist-get before-prev :type) :option)
+               (setq prev nil))
 
-                   (let ((subcommand (pcomplete-declare-subcommand arg
-                                                                   candidates)))
-                     (setq before-prev nil
-                           candidates (plist-get subcommand :candidates)
-                           prev (pcomplete-declare-remove-candidates
-                                 subcommand)))
-
-                 (cl-destructuring-bind (new-candidates removed)
-                     (pcomplete-declare-remove-positional-candidate candidates)
-                   (setq candidates new-candidates
-                         prev removed))))
+              ((pcomplete-declare-subcommand-p arg candidates)
+               (let ((subcommand (pcomplete-declare-subcommand arg candidates)))
+                 (setq before-prev nil
+                       candidates (plist-get subcommand :candidates)
+                       prev (pcomplete-declare-remove-candidates
+                             subcommand))))
 
               (t
-               (setq prev nil))))
+               (cl-destructuring-bind (new-candidates removed)
+                   (pcomplete-declare-remove-positional-candidate candidates)
+                 (setq candidates new-candidates
+                       prev removed)))))
 
       (pcomplete-next-arg))
 
@@ -260,8 +258,7 @@ This function provides all the completions on `CANDIDATES'"
                (throw 'pcomplete-completions
                       (append subcommand-completions
                               (if (functionp positional-completions)
-                                  (all-completions (pcomplete-arg 'last)
-                                                   positional-completions)
+                                  (all-completions arg positional-completions)
                                 positional-completions))))
 
               ((try-completion arg subcommand-completions)
